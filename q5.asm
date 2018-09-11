@@ -1,5 +1,5 @@
 .data
-	ArrayA:	.word 3, 2, 3, 4, 5, 6, 7, 8, 9
+	ArrayA:	.word 99, 2, 3, 4, 5, 6, 7, 8, 9
 	ArrayB:	.word 0, 0, 0, 0, 0, 0, 0, 0, 0 
 	  rems: .word 0
       contador: .word 0
@@ -22,12 +22,15 @@ Laco:
 	rem  $a2, $t0, 5
 	rem  $a3, $t0, 7
 
-	and $t4, $a0, $a1
-	and $t5, $a2, $a3
-	and $t6, $t4, $t5
-	beq $t6, 0, naoPrimo
-	beq $t6, 1, Primo
+	beq $a0, 0, naoPrimo
+	beq $a1, 0, naoPrimo
+	beq $a2, 0, naoPrimo
+	beq $a3, 0, naoPrimo
 
+	bne $a0, 0, Primo
+	bne $a1, 0, Primo
+	bne $a2, 0, Primo
+	bne $a3, 0, Primo
 
 naoPrimo:
 	add $t3, $t3, 4
