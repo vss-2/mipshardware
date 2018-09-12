@@ -1,0 +1,39 @@
+ 	.data
+a:	.word	-7,8,1,51,107,2,23,11,13 	#vetor
+i:	.word	9 		#tamanho do vetor 
+b:	.word	 		#VETOR DESTINO
+
+ .text   
+        .globl	main            
+        
+main:	
+	la $8, a		#Endereço vetor origen
+	la $9, b		#Endereço vetor destino
+	addi $8, $8, -4 	#Endereço anterior ao vetor, para melhor usar o loop
+	addi $15, $0, 2 	#Salvando 2 em $15
+    	addi $17, $0, 100 	#Salvando 100 em $17
+    	addi $18, $0, 1 	#Salvando 1 em $18
+	lw $10, i		#Tamanho do vetor
+
+pecVet:
+	addi $8,$8,4		#Primeiro elemento do vetor
+	addi $10,$10,-1		#diminui o contador i
+	blt $10,$0, Fim 	#se i for 0, todos os numeros ja foram analisados, sai do loop
+	lw $11,0($8)   		#pego valor do array
+    	bgt $11, $17, pecVet	#maior do que 100, pecVet(pegar outro elemento do vetor)
+    	blt $11, $18, pecVet	#menor do que 1, pecVet(pegar outro elemento do vetor)
+	div $11,$15   		#divide o valor por 2
+	mflo $12       		#salva o quociente da div em 12
+	mflo $13       		#salva o quociente da div em 13
+
+verPrim:	
+	div $11,$12		#divide o valo pela metade dele (algoritmo dos numeros primos)
+	mfhi $14		#salva o resto em $14
+	beq $14, $0, pecVet	#se o resto for 0, continue pecorrendo o vetor
+	addi $12,$12,-1		#pega o valor anterior a $12
+	bne $12, $15,verPrim	#se $12 != 2 , continuar fazendo divizões
+	lw $16, 0($8)		#nesse trecho, nenhuma divisão teve resto 0, logo é primo
+	sw $16, 0($9)		#salva o numero no vetor destino
+	addi $9, $9, 4		#posição seguinte do vetor destino
+	j pecVet		#pega proximo numéro do vetor origem
+Fim:
