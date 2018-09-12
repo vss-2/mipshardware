@@ -1,7 +1,7 @@
 .data
 
-m : .word 11	#definindo as entradas
-n : .word 2
+m : .word 64	#definindo as entradas
+n : .word 4
 
 .text
 	.globl main
@@ -9,7 +9,7 @@ n : .word 2
 	main:
 	
 	lw $t0, m	#coloco as entradas em registradores
-	lw $t1, n
+	lw $t1, n	
 	
 	loop:
 	
@@ -21,3 +21,4 @@ n : .word 2
 
 	fimdoprograma:
 	
+	#A resposta esta no endereco de $t3
