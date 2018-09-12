@@ -1,0 +1,40 @@
+ 	.data
+x:	.word	1
+y:	.word	4
+
+ .text   
+        .globl	main            
+        
+main:
+	lw $a0, x
+	lw $a1, y
+	bge $a1, $a0, somNum
+	addi $v1, $zero, 1
+	j fim
+
+somNum:
+	jal sum
+	j fim
+sum:
+	addi $sp,$sp,-8		#Adicona dois espaço na pilha
+	sw $ra,4($sp) 		#Salva o endereço de ra(que está o endereço logo onde jal foi chamado)
+	sw $a0,0($sp) 		#Salvo o valor que se quer
+	seq $t0,$a0,$a1		#seta $t0 =1 se $a0 == $a1 (quando x ==1)
+	beq $t0, $zero, L1 	#Se t0 == 0 pula pra L1
+
+# O código só passa quando $a0 == $a1
+
+	add $v0, $a0, $zero	# O valor de $v0 vai ser igual ao valor de a0 que é o ultimo valor da pilha (que corresponde ao valor em $a1 = y)
+	addi $sp, $sp, 8 	# Tira os dois valores da pilha
+	jr $ra			#chama trecho de código em ra
+
+L1:
+	addi $a0, $a0, 1	#soma o valor menor +1 até chegar no valor maior
+	jal sum 		#salva em ra e faz sum de novo
+	lw $a0, 0($sp)		#pega o valor que ta na pilha
+	lw $ra, 4($sp)		# o endereço salva em ra
+	addi $sp, $sp, 8 	# Tira os dois valores da pilha
+	add $v0, $a0, $v0       # v0 = v0 + a0 (A SOMA FICARÁ ARMAZENADA EM V0!!!!)
+	jr $ra			#volta pro codigo em ra
+
+fim:
