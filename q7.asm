@@ -1,5 +1,5 @@
 .data
-	valor: .word 10 #Insira o valor a ser fibaddo
+	valor: .word 13
 .text
 .globl main
 main:
@@ -8,7 +8,6 @@ lw $v0, valor
 add $a0,$v0,$zero #move to $a0
 
 jal fib #call fib
-
 add $a0,$v0,$zero
 li $v0,1
 syscall
