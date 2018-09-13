@@ -1,42 +1,61 @@
-#Algoritmo fibonacci
-#entrada int n
-#saida soma fib(n)
-
-#Metodo
-#Caso base, se n <= 1, retorne 1
-#Recursao: fib(n-1)+fib(n-2)
-
 .data
-
- n: .word 10
+	valor: .word #Insira aqui o valor de fib que voce quer
+.text
 
 .globl main
+main:
 
-.text 
+	li $v0, 4
+	la $a0, valor	     #$a0 = armazena o falor a ser fibaddo
+	addi $t1,$zero, 1    #$t1 = 1
 
-main: 
+	li $v0,5
 
-	lw 	$t0, n
-	bgt 	$t0, 1, recursao #Se n for maior que um, faça recursao
-	move    $v0, $a0
-	j 	fim	#Senao acabou
+	add $a0,$v0,$zero #Incrementa 4
 
-recursao:
+	jal fib #Inicia a funcao fibonacci
 
-	sub	$sp, $sp, 12 #Armazenamento em pilha, de tamanho 3
-	sw	$ra, 0($sp) #Armazenando n
-	sw	$a0, 4($sp) #Armazena n-1
-	add     $a0, $a0, -1
-	jal 	main
-	lw	$a0, 4($sp) #Pega o valor de n
-	sw	$v0, 8($sp) #Guarda resultado de fib(n-1)
-	add	$a0, $a0, -2
-	jal 	main
+	add $a0,$v0,$zero
+	li $v0,1
+
+	li $v0,10
+
+recursaofib:
+
+	addi $sp,$sp,-12 #Salva na pilha os valores
+	sw $ra,0($sp)
+	sw $s0,4($sp)
+	sw $s1,8($sp)
+
+	add $s0,$a0,$zero
+
+
+	beq $s0,$zero, casozero	#Caso: igual a zero
+	beq $s0,$t1, casoum     #Caso: iugal a um
+
+	addi $a0,$s0,-1
+
+	jal recursaofib
+
+	add $s1,$zero,$v0     #$s1 = fib(n-1)
+
+	addi $a0,$s0,-2
+
+	jal recursaofib       #$v0 = fib(n-2)
+
+	add $v0,$v0,$s1       #$v0 = fib(n-2)+$s1
 	
-	lw	$t0, 8($sp) #Resgata valor fib(n-1)
-	add	$v0, $t0, $v0 #Soma dos fibs
-	lw      $ra, 0($sp)
-	add	$sp, $sp, 12 #Limpa a fila
-	jr	$ra
+pilhagem:
 
-fim:
+	lw $ra,0($sp)         #Le os valores armazenados na pilha
+	lw $s0,4($sp)
+	lw $s1,8($sp)
+	addi $sp,$sp,12       #Avança o ponteiro da pilha de volta ao inicio
+	jr $ra
+
+casoum:
+ 	li $v0, 1
+ 	j pilhagem
+casozero :
+        li $v0, 0
+ 	j pilhagem
