@@ -48,7 +48,7 @@ pilhagem:
     addi $sp, $sp, 12       #volta o apontador da pilha
     jr $ra
 
-casoum:	#Caso base
+casoum:   #Caso base
 
     li $v0, 1
     j pilhagem
