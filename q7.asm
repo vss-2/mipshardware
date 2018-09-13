@@ -9,10 +9,8 @@ add $a0,$v0,$zero #move to $a0
 
 jal fib #call fib
 add $a0,$v0,$zero
-li $v0,1
-syscall
 
-li $v0,10
+li $v0,10 #executa a saida do programa
 syscall
 
 fib:
