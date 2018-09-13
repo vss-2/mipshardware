@@ -25,8 +25,8 @@ recfib:
     add $s0, $a0, $zero
 
     addi $t1, $zero, 1
-    beq $s0, $zero, casozero
-    beq $s0, $t1, casoum
+    beq $s0, $zero, casozero	#Caso base: se for igual a 1
+    beq $s0, $t1, casoum	#Caso base: se for igual a 0
 
     addi $a0,$s0,-1
 
@@ -48,11 +48,11 @@ pilhagem:
     addi $sp, $sp, 12       #volta o apontador da pilha
     jr $ra
 
-casoum:
+casoum:	#Caso base
 
     li $v0, 1
     j pilhagem
-casozero:     
+casozero: #Caso base     
 
     li $v0, 0
     j pilhagem
